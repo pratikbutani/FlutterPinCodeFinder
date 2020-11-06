@@ -63,47 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: 10),
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 1,
-                child: TextFormField(
-                  controller: _text,
-                  decoration: new InputDecoration(
-                    labelText: "Enter Area",
-                    fillColor: Colors.white,
-                    errorText:
-                        _validateAgain ? 'This should not be empty!' : null,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(15.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if (val.length == 0) {
-                      return "This shouldn't be empty!";
-                    } else {
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.streetAddress,
-                ),
-              ),
+              getTextInputField(),
               SizedBox(width: 10),
-              new RaisedButton(
-                child: Text("Get Pincode"),
-                onPressed: () {
-                  setState(() {
-                    if (_text.text.isNotEmpty) {
-                      _validateAgain = false;
-                      textValue = _text.text;
-                      _apiCall = true;
-                      _callAPIForPinCode();
-                    } else
-                      _validateAgain = true;
-                  });
-                },
-              ),
+              getButton(),
               SizedBox(width: 10),
             ],
           ),
@@ -114,16 +76,63 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  getTextInputField() {
+    return Flexible(
+      fit: FlexFit.tight,
+      flex: 1,
+      child: TextFormField(
+        controller: _text,
+        decoration: new InputDecoration(
+          labelText: "Enter Area",
+          fillColor: Colors.white,
+          errorText: _validateAgain ? 'This should not be empty!' : null,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(15.0),
+            borderSide: new BorderSide(),
+          ),
+          //fillColor: Colors.green
+        ),
+        validator: (val) {
+          if (val.length == 0) {
+            return "This shouldn't be empty!";
+          } else {
+            return null;
+          }
+        },
+        keyboardType: TextInputType.streetAddress,
+      ),
+    );
+  }
+
+  getButton() {
+    return new RaisedButton(
+      child: Text("Get Pincode"),
+      onPressed: () {
+        setState(() {
+          if (_text.text.isNotEmpty) {
+            _validateAgain = false;
+            textValue = _text.text;
+            _apiCall = true;
+            _callAPIForPinCode();
+          } else
+            _validateAgain = true;
+        });
+      },
+    );
+  }
+
   getProperWidget() {
     if (_apiCall)
-      return new CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     else if (postOfficeList.length == 0)
-      return new Text("");
-    else
+      return Text("No data found!");
+    else {
+      // To bind ListView
       return Flexible(
           fit: FlexFit.tight,
           flex: 1,
           child: PostOfficeList(postOfficeList: this.postOfficeList));
+    }
   }
 
   void _callAPIForPinCode() {
@@ -132,11 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
         (value) => {
               setState(() {
                 _apiCall = false;
+                print('Value' + value.message);
                 postOfficeList = value.postOffice;
               })
             }, onError: (error) {
       setState(() {
         _apiCall = false;
+        print('Value $error');
         postOfficeList = new List();
       });
     });
@@ -160,7 +171,7 @@ class PostOfficeList extends StatelessWidget {
             '${postOffice.name} - ${postOffice.district} - ${postOffice.pincode}',
             style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.black,
+                color: Colors.brown,
                 fontWeight: FontWeight.bold),
           )),
         ); //
