@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: TextFormField(
         controller: _text,
         decoration: new InputDecoration(
-          labelText: "Enter Area",
+          labelText: "Enter Area for Pincode",
           fillColor: Colors.white,
           errorText: _validateAgain ? 'This should not be empty!' : null,
           border: new OutlineInputBorder(
@@ -123,9 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   getProperWidget() {
     if (_apiCall)
-      return Center(child: CircularProgressIndicator());
+      return Expanded(child: Center(child: CircularProgressIndicator()));
     else if (postOfficeList.length == 0)
-      return Text("No data found!");
+      return Expanded(child: Center(child:Text("No data found!")));
     else {
       // To bind ListView
       return Flexible(
