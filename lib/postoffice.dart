@@ -1,14 +1,47 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'postoffice.g.dart';
+
+@JsonSerializable()
+class PostalModel {
+  @JsonKey(name: 'Message')
+  String message;
+  @JsonKey(name: 'Status')
+  String status;
+  @JsonKey(name: 'PostOffice')
+  List<PostOffice> postOffice;
+
+  PostalModel({this.message, this.status, this.postOffice});
+
+  factory PostalModel.fromJson(Map<String, dynamic> json) =>
+      _$PostalModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PostalModelToJson(this);
+}
+
+@JsonSerializable()
 class PostOffice {
+  @JsonKey(name: 'Name')
   String name;
-  Null description;
+  @JsonKey(name: 'Description')
+  String description;
+  @JsonKey(name: 'BranchType')
   String branchType;
+  @JsonKey(name: 'DeliveryStatus')
   String deliveryStatus;
+  @JsonKey(name: 'Circle')
   String circle;
+  @JsonKey(name: 'District')
   String district;
+  @JsonKey(name: 'Division')
   String division;
+  @JsonKey(name: 'Region')
   String region;
+  @JsonKey(name: 'State')
   String state;
+  @JsonKey(name: 'Country')
   String country;
+  @JsonKey(name: 'Pincode')
   String pincode;
 
   PostOffice(
@@ -24,62 +57,8 @@ class PostOffice {
       this.country,
       this.pincode});
 
-  PostOffice.fromJson(Map<String, dynamic> json) {
-    name = json['Name'];
-    description = json['Description'];
-    branchType = json['BranchType'];
-    deliveryStatus = json['DeliveryStatus'];
-    circle = json['Circle'];
-    district = json['District'];
-    division = json['Division'];
-    region = json['Region'];
-    state = json['State'];
-    country = json['Country'];
-    pincode = json['Pincode'];
-  }
+  factory PostOffice.fromJson(Map<String, dynamic> json) =>
+      _$PostOfficeFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Name'] = this.name;
-    data['Description'] = this.description;
-    data['BranchType'] = this.branchType;
-    data['DeliveryStatus'] = this.deliveryStatus;
-    data['Circle'] = this.circle;
-    data['District'] = this.district;
-    data['Division'] = this.division;
-    data['Region'] = this.region;
-    data['State'] = this.state;
-    data['Country'] = this.country;
-    data['Pincode'] = this.pincode;
-    return data;
-  }
-}
-
-class PostalModel {
-  String message;
-  String status;
-  List<PostOffice> postOffice;
-
-  PostalModel({this.message, this.status, this.postOffice});
-
-  PostalModel.fromJson(Map<String, dynamic> json) {
-    message = json['Message'];
-    status = json['Status'];
-    if (json['PostOffice'] != null) {
-      postOffice = new List<PostOffice>();
-      json['PostOffice'].forEach((v) {
-        postOffice.add(new PostOffice.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Status'] = this.status;
-    if (this.postOffice != null) {
-      data['PostOffice'] = this.postOffice.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$PostOfficeToJson(this);
 }
